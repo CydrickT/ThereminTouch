@@ -1,0 +1,8 @@
+html, body {
+    margin: 0px;
+}
+
+canvas {
+    background:url('../img/background2.png');
+    background-size: 100% 100%;
+}

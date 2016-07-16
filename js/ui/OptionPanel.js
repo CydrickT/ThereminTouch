@@ -1,0 +1,71 @@
+function OptionPanel(xButton, yButton, type){
+    var _canvas = getCanvas();
+    var _context = getContext();
+    var _type = type;
+    var _x = xButton-300*_canvas.width/2736;
+    var _y = yButton-400*_canvas.height/1824;
+    var _width = 600*_canvas.width/2736;
+    var _height = 300*_canvas.height/1824;
+    var _fontSize = 28*_canvas.height/1824;
+    var _lineWidth = 11*_canvas.width/2736;
+    var _isOpen = false;
+
+    var _MINFREQUENCY = 0;
+    var _MAXFREQUENCY = 2000;
+
+    this.draw = function() {
+        this.shape();
+        _context.fillStyle = '#E6E6E6';
+        _context.fill();
+        _context.lineWidth = _lineWidth;
+        _context.strokeStyle = 'black';
+        _context.stroke();
+        _isOpen = true;
+        this.addContent();
+    }
+
+    this.shape = function() {
+        _context.beginPath();
+        _context.rect(_x, _y, _width, _height);
+    }
+
+    this.checkNotTouch = function(x, y) {
+        this.shape();
+        return !_context.isPointInPath(x, y);
+    }
+
+    this.isOpen = function() {
+        return _isOpen;
+    }
+
+    this.addContent = function() {
+        var text = '';
+        switch (_type)
+        {
+            case "Pitch":
+                text = 'Select the pitch (Hz):';
+                var rs = new RangeSlider(_x, _x+_width,
+                _y+(0.7*_height),_MINFREQUENCY,_MAXFREQUENCY,100,400);
+                rs.draw();
+                break;
+            case "Waveform":
+                break;
+            case "Detune":
+                break;
+            case "Echo":
+                break;
+            case "Brightness":
+                break;
+            case "Power":
+                break;
+        }
+        this.drawText(text);
+    }
+
+    this.drawText = function(text) {
+        _context.font = 'bold '+_fontSize+'pt Calibri';
+        _context.textAlign = 'left';
+        _context.fillStyle = 'black';
+        _context.fillText(text, _x+(0.1*_width), _y+(0.2*_height));
+    }
+}
