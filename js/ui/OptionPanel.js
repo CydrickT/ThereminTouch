@@ -13,6 +13,8 @@ function OptionPanel(xButton, yButton, type){
     var _MINFREQUENCY = 0;
     var _MAXFREQUENCY = 2000;
 
+    var _rsPitch = 0;
+
     this.draw = function() {
         this.shape();
         _context.fillStyle = '#E6E6E6';
@@ -44,9 +46,8 @@ function OptionPanel(xButton, yButton, type){
         {
             case "Pitch":
                 text = 'Select the pitch (Hz):';
-                var rs = new RangeSlider(_x, _x+_width,
-                _y+(0.7*_height),_MINFREQUENCY,_MAXFREQUENCY,100,400);
-                rs.draw();
+                _rsPitch = new RangeSlider(_x, _x+_width, _y+(0.7*_height),_MINFREQUENCY,_MAXFREQUENCY,getFrequencyMin(),getFrequencyMax());
+                _rsPitch.draw();
                 break;
             case "Waveform":
                 break;
@@ -54,12 +55,20 @@ function OptionPanel(xButton, yButton, type){
                 break;
             case "Echo":
                 break;
-            case "Brightness":
+            case "Bitcrusher":
                 break;
             case "Power":
                 break;
         }
         this.drawText(text);
+    }
+
+    this.getType = function() {
+        return _type;
+    }
+
+    this.getRsPitch = function() {
+        return _rsPitch;
     }
 
     this.drawText = function(text) {
