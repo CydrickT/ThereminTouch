@@ -11,12 +11,14 @@
     
     var _inputToStepMapper;
     var _audioController;
-    var _frequencyMin = 30;
-    var _frequencyMax = 500;
+    var _frequencyRange;
+    var _mappedStepList;
     
     this.init = function() {
         _inputToStepMapper = new InputToStepMapper();
         _audioController = new AudioController();
+        _frequencyRange = new FrequencyRange(30, 500)
+        _mappedStepList = _inputToStepMapper.selectFrequencyRange(_frequencyRange);
         this.setAudioController();
         this.createCanvas();
         this.createButtons();
@@ -104,7 +106,7 @@
     this.drawStepLines = function() {
         _stepLines = [];
         var i=0;
-        _inputToStepMapper.selectFrequencyRange(new FrequencyRange(_frequencyMin, _frequencyMax)).forEach(function(mappedStep) {
+        _mappedStepList.forEach(function(mappedStep) {
             _stepLines.push(new StepLine(mappedStep.getPercentage(), mappedStep.getStep().getNoteAsString(), mappedStep.getStep().isHalfTone(), i));
             i++;
         });
@@ -181,6 +183,7 @@
                 _currentPanel.getRsPitch().handleMove(e);
             }
         }
+
         var zone1x = [];
         var currentX = 0;
         for (var i = 0; i < e.touches.length; i++) {
@@ -191,13 +194,16 @@
                 zone1x.push(x);
             }
         }
-
         zone1x.forEach(function (xZone1) {
             if (xZone1 > currentX) {
                 currentX = xZone1;
             }
         });
-        _audioController.setFrequency(_inputToStepMapper.calculateFrequencyFromTouch((_canvas.zone[1].x2 - _canvas.zone[1].x1) / (currentX - _canvas.zone[1].x1)));
+        var touchPercentage = (currentX - _canvas.zone[1].x1) / (_canvas.zone[1].x2 - _canvas.zone[1].x1);
+        var frequency = _inputToStepMapper.calculateFrequencyFromTouch(touchPercentage);
+        redrawScene();
+        _context.fillText(touchPercentage, 200, 100);
+        _audioController.setFrequency(frequency);
         _audioController.play();
     }
 
