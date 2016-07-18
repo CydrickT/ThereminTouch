@@ -17,7 +17,7 @@
     this.init = function() {
         _inputToStepMapper = new InputToStepMapper();
         _audioController = new AudioController();
-        _frequencyRange = new FrequencyRange(54, 111)
+        _frequencyRange = new FrequencyRange(30, 500)
         _mappedStepList = _inputToStepMapper.selectFrequencyRange(_frequencyRange);
         this.setAudioController();
         this.createCanvas();
