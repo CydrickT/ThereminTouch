@@ -19,6 +19,53 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
     var _circleX1 = 0;
     var _circleX2 = 0;
 
+    var _touchX = 0;
+    var _touchY = 0;
+    var _currentCircle = 0;
+
+    this.handleStart = function(e) {
+        _touchX = e.touches[0].clientX;
+        _touchY = e.touches[0].clientY;
+        if (this.checkTouchCircle1(_touchX, _touchY)) {
+            _currentCircle = 1;
+            _colorCircle = 'red';
+            redrawScene();
+        } else if (this.checkTouchCircle2(_touchX, _touchY)) {
+            _currentCircle = 2;
+        } else {
+            _currentCircle = 0;
+        }
+    }
+
+    this.handleMove = function(e) {
+        _touchX = e.touches[0].clientX;
+        _touchY = e.touches[0].clientY;
+        if (_currentCircle === 1) {
+            _value1 = this.update(_value1);
+            this.setCircleX1();
+        } else if (_currentCircle === 2) {
+            _value2 = this.update(_value2);
+            this.setCircleX2();
+        } else {
+            return;
+        }
+    }
+
+    this.handleEnd = function(e) {
+        e.preventDefault();
+        _currentCircle = 0;
+    }
+
+    this.update = function(value) {
+        if (_touchX < _startX) {
+            return _minValue;
+        } else if (_touchX > _startX) {
+            return _maxValue;
+        }
+
+        return (_maxValue - _minValue) * ((_touchX - _startX) / (_endX - _startX));
+    }
+
     this.draw = function() {
         this.setCircleX1();
         this.setCircleX2();
@@ -74,6 +121,16 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
     this.circle2 = function() {
         _context.beginPath();
         _context.arc(_circleX2, _y, _radius, 0, 2*Math.PI, false);
+    }
+
+    this.checkTouchCircle1 = function(x, y) {
+        this.circle1();
+        return _context.isPointInPath(x, y);
+    }
+
+    this.checkTouchCircle2 = function(x, y) {
+        this.circle2();
+        return _context.isPointInPath(x, y);
     }
 
     this.setCircleX1 = function() {
