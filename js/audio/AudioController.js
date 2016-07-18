@@ -168,9 +168,9 @@ function AudioController(){
 		this.setVolume(0.15);
 		this.setDetune(0);
 		this.setWaveformType(0);
-		this.setEchoDelay(0.2);
-		this.setFeedbackPercentage(0.25);
-		this.setWetLevelPercentage(0.25);
+		this.setEchoDelay(0);
+		this.setFeedbackPercentage(0);
+		this.setWetLevelPercentage(0);
 		this.setEnableBitcrusher(false);
 	};
 
