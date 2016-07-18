@@ -14,6 +14,7 @@ function OptionPanel(xButton, yButton, type){
     var _MAXFREQUENCY = 2000;
 
     var _rsPitch = 0;
+    var _ossWaveform = 0;
 
     this.draw = function() {
         this.shape();
@@ -50,6 +51,10 @@ function OptionPanel(xButton, yButton, type){
                 _rsPitch.draw();
                 break;
             case "Waveform":
+                var options = [];
+                options.push('Qwerty1','Qwerty2','Qwerty3','Qwerty4');
+                _ossWaveform = new OptionSingleSelect(_x, _y, _x+_width, _y+_height, options, 'black', 'Select a waveform:');
+                _ossWaveform.draw();
                 break;
             case "Detune":
                 break;
@@ -69,6 +74,10 @@ function OptionPanel(xButton, yButton, type){
 
     this.getRsPitch = function() {
         return _rsPitch;
+    }
+
+    this.getOssWaveform = function() {
+        return _ossWaveform;
     }
 
     this.drawText = function(text) {

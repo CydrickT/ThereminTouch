@@ -27,12 +27,11 @@
     }
 
     this.setAudioController = function() {
-
-        _audioController.setFrequency(100);
+        _audioController.setFrequency(_frequencyRange.getMinimum());
         _audioController.setVolume(1);
         _audioController.setWaveformType(0);
-        //_audioController.setDetune(100);
-        //_audioController.setEchoDelay(0);
+        _audioController.setDetune(0);
+        _audioController.setEchoDelay(0);
         _audioController.setEnableBitcrusher(false);
     }
     
@@ -60,13 +59,16 @@
         _canvas.separator = Math.floor(window.innerWidth*0.3);
         _canvas.separatorWidth = 30;
         _canvas.zone = [
-            {x1:0, y1:0, x2:_canvas.separator, y2:_canvas.height*0.95},
-            {x1:_canvas.separator+_canvas.separatorWidth, y1:0, x2:_canvas.width*0.98, y2:_canvas.height*0.884}
+            {x1:0, y1:0, x2:_canvas.separator, y2:_canvas.height*0.95}, //Volume zone
+            {x1:_canvas.separator+_canvas.separatorWidth, y1:0, x2:_canvas.width*0.98, y2:_canvas.height*0.884}, //Frequency zone
         ];
+        _canvas.zone.push({x1:_canvas.zone[0].x1, y1:_canvas.zone[0].y2, x2:_canvas.zone[0].x2, y2:_canvas.height}); //Volume=0 zone
     }
 
     this.isInZone = function(x,y) {
-        if((x>=_canvas.zone[0].x1 && x<=_canvas.zone[0].x2) && (y>=_canvas.zone[0].y1 && y<=_canvas.zone[0].y2)) {
+        if((x>=_canvas.zone[2].x1 && x<=_canvas.zone[2].x2) && (y>=_canvas.zone[2].y1 && y<=_canvas.zone[2].y2)) {
+            return -1; //Volume=0 zone
+        } else if((x>=_canvas.zone[0].x1 && x<=_canvas.zone[0].x2) && (y>=_canvas.zone[0].y1 && y<=_canvas.zone[0].y2)) {
             return 0; //Volume zone
         } else if ((x>=_canvas.zone[1].x1 && x<=_canvas.zone[1].x2) && (y>=_canvas.zone[1].y1 && y<=_canvas.zone[1].y2)) {
             return 1; //Frequency zone
@@ -144,12 +146,72 @@
 
     this.handleStart = function(e) {
         e.preventDefault();
-        if (_currentPanel !== 0) {
-            if (_currentPanel.getType() === 'Pitch') {
-                _currentPanel.getRsPitch().handleStart(e);
-            }
+        handleButtons(e);
+        if (powerIsOn()) {
+            play(e);
+        } else {
+            handleRsPitchStart(e);
+            handleOssWaveformStart(e);
+        }
+    }
+
+    this.handleMove = function(e) {
+        e.preventDefault();
+        if (powerIsOn()) {
+            play(e);
+        } else {
+            _audioController.pause();
+            handleRsPitchMove(e);
+        }
+    }
+
+    this.handleEnd = function(e) {
+        e.preventDefault();
+        if (e.touches.length === 0) {
+            _inputToStepMapper.resetTouch();
+        }
+    }
+
+    var play = function(e) {
+        var zone1x = getZoneX(e.touches ,1);
+        var zone2y = getZoneY(e.touches ,2);
+        var zonem1y = getZoneY(e.touches ,-1);
+        var current = 0;
+        if(zone1x.length === 0) {
+            _audioController.setFrequency(_frequencyRange.getMinimum());
+        } else {
+            zone1x.forEach(function (xZone1) {
+                if (xZone1 > current) {
+                    current = xZone1;
+                }
+            });
+            var touchPercentage = (current - _canvas.zone[1].x1) / (_canvas.zone[1].x2 - _canvas.zone[1].x1);
+            var frequency = _inputToStepMapper.calculateFrequencyFromTouch(touchPercentage);
+            redrawScene();
+            _context.fillText(touchPercentage, 200, 100);
+            _audioController.setFrequency(frequency);
         }
 
+        if (zone2y.length === 0) {
+            _audioController.setVolume(1);
+        } else {
+            zone2y.forEach(function (yZone2) {
+                if (yZone2 > current) {
+                    current = xZone2;
+                }
+            });
+            var volume = (current - _canvas.zone[0].y1) / (_canvas.zone[0].y2 - _canvas.zone[0].y1);
+            redrawScene();
+            _context.fillText(volume, 200, 300);
+            _audioController.setVolume(volume);
+        }
+        if (zonem1y.length !== 0) {
+            _audioController.setVolume(0);
+        }
+        _audioController.play();
+    }
+
+    var handleButtons = function(e) {
         for (var i=0; i<e.touches.length; i++) {
             var touch = e.touches[i];
             var x = touch.clientX;
@@ -161,7 +223,7 @@
                 }
             }
             if(e.touches.length<=1) {
-                if (_powerIsOn) {
+                if (powerIsOn()) {
                     if (_buttons[0].checkTouch(x, y)) {
                         _buttons[0].press();
                     }
@@ -176,42 +238,54 @@
         }
     }
 
-    this.handleMove = function(e) {
-        e.preventDefault();
+    var handleRsPitchStart = function(e) {
+        if (_currentPanel !== 0) {
+            if (_currentPanel.getType() === 'Pitch') {
+                _currentPanel.getRsPitch().handleStart(e);
+            }
+        }
+    }
+
+    var handleRsPitchMove = function(e) {
         if (_currentPanel !== 0) {
             if (_currentPanel.getType() === 'Pitch') {
                 _currentPanel.getRsPitch().handleMove(e);
             }
         }
+    }
 
+    var handleOssWaveformStart = function(e) {
+        if (_currentPanel !== 0) {
+            if (_currentPanel.getType() === 'Waveform') {
+                _currentPanel.getOssWaveform().handleStart(e);
+            }
+        }
+    }
+
+    var getZoneX = function(touches, zone) {
         var zone1x = [];
-        var currentX = 0;
-        for (var i = 0; i < e.touches.length; i++) {
-            var touch = e.touches[i];
+        for (var i = 0; i < touches.length; i++) {
+            var touch = touches[i];
             var x = touch.clientX;
             var y = touch.clientY;
-            if (isInZone(x, y) === 1) {
+            if (isInZone(x, y) === zone) {
                 zone1x.push(x);
             }
         }
-        zone1x.forEach(function (xZone1) {
-            if (xZone1 > currentX) {
-                currentX = xZone1;
-            }
-        });
-        var touchPercentage = (currentX - _canvas.zone[1].x1) / (_canvas.zone[1].x2 - _canvas.zone[1].x1);
-        var frequency = _inputToStepMapper.calculateFrequencyFromTouch(touchPercentage);
-        redrawScene();
-        _context.fillText(touchPercentage, 200, 100);
-        _audioController.setFrequency(frequency);
-        _audioController.play();
+        return zone1x;
     }
 
-    this.handleEnd = function(e) {
-        e.preventDefault();
-        if (e.touches.length === 0) {
-            _inputToStepMapper.resetTouch();
+    var getZoneY = function(touches, zone) {
+        var zone1y = [];
+        for (var i = 0; i < touches.length; i++) {
+            var touch = touches[i];
+            var x = touch.clientX;
+            var y = touch.clientY;
+            if (isInZone(x, y) === zone) {
+                zone1y.push(y);
+            }
         }
+        return zone1y;
     }
 
     this.switchPower = function() {
@@ -224,6 +298,7 @@
 
     this.switchBitcrusher = function() {
         _bitcrusherIsOn = !_bitcrusherIsOn;
+        _audioController.setEnableBitcrusher(_bitcrusherIsOn);
     }
 
     this.bitcrusherIsOn = function () {
@@ -239,19 +314,19 @@
     }
 
     this.getFrequencyMin = function() {
-        return _frequencyMin;
+        return _frequencyRange.getMinimum();
     }
 
     this.setFrequencyMin = function(frequencyMin) {
-        _frequencyMin = frequencyMin;
+        _frequencyRange.setMinimum(frequencyMin);
     }
 
     this.getFrequencyMax = function() {
-        return _frequencyMax;
+        return _frequencyRange.getMaximum();
     }
 
     this.setFrequencyMax = function(frequencyMax) {
-        _frequencyMax = frequencyMax;
+        _frequencyRange.setMaximum(frequencyMax);
     }
 
     window.onload = function() {
