@@ -1,21 +1,14 @@
-function Button(xPerc, yPerc, type, text){
+function Button(xPerc, yPerc, color, text){
     var _canvas = getCanvas();
     var _context = getContext();
     var _x = _canvas.width*xPerc;
     var _y = _canvas.height*yPerc;
     var _radius = 45*_canvas.width/2736;
-    var _color = 0;
-    var _type = type;
+    var _color = color;
     var _text = text;
     var _lineWidth = 11*_canvas.width/2736;
     var _fontSize = 28*_canvas.height/1824;
     var _isOn = false;
-    
-    if (_type === 'panel') {
-        _color = 'gray';
-    } else if (_type === 'switch') {
-        _color = 'red';
-    }
 
     this.draw = function() {
         this.shape();
@@ -41,27 +34,18 @@ function Button(xPerc, yPerc, type, text){
     }
 
     this.press = function() {
-        if (_type === 'panel') {
-            setCurrentPanel(new OptionPanel(_x, _y, _text));
+        if (_text === 'Power') {
+            switchPower();
+            this.switchPowerColor();
         } else {
-            switch (_text) {
-                case "Bitcrusher":
-                    switchBitcrusher();
-                    break;
-                case "Continuous":
-                    switchContinuous();
-                    break;
-                case "Power":
-                    switchPower();
-                    break;
-            }
-            this.switchColor();
+            setCurrentPanel(new OptionPanel(_x, _y, _text));
         }
         redrawScene();
     }
 
-    this.switchColor = function() {
-        if(_color === 'red') {
+
+    this.switchPowerColor = function() {
+        if(powerIsOn()) {
             _color = 'green';
         } else {
             _color = 'red';

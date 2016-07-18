@@ -10,14 +10,6 @@ function FrequencyRange(minimum, maximum){
         return _maximum;
     };
 
-    this.setMinimum = function(minimum) {
-        _minimum = minimum;
-    }
-
-    this.setMaximum = function(maximum) {
-        _maximum = maximum;
-    }
-
     this.getDifference = function(){
         return _maximum - _minimum;
     };
