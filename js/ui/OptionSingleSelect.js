@@ -35,11 +35,14 @@ function OptionSingleSelect(x1, y1, x2, y2, options, color, text) {
                 _xText = _xText+(_x2-_x1)*0.5;
             }
             var measuredText = _context.measureText(option);
-            _rects.push(new Rect(_xText, _yText, measuredText.width, measuredText.height));
+            _rects.push(new Rect(_xText, _yText, measuredText.width, _fontSize));
             _context.fillText(option, _xText, _yText);
             i++;
         });
     }
+
+
+
 
     this.handleStart = function(e) {
         _touchX = e.touches[0].clientX;
@@ -47,24 +50,25 @@ function OptionSingleSelect(x1, y1, x2, y2, options, color, text) {
         var i = this.checkTouch(_touchX, _touchY);
         if (i !== -1) {
             _selectedOption = i;
+            redrawScene();
         }
     }
 
     this.checkTouch = function (x,y) {
-        var i=0;
-        _rects.forEach(function (rect) {
-            shape(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        for(var i = 0; i < _rects.length; i++){
+            shape(_rects[i].getX(), _rects[i].getY(), _rects[i].getWidth(), _rects[i].getHeight());
             if (_context.isPointInPath(x, y)){
                 return i;
             }
-            i++;
-        });
+        }
         return -1;
     }
 
     var shape = function (x , y, width, height) {
         _context.beginPath();
         _context.rect(x, y, width, height);
+
+        _context.fillStyle = 'black';
         _context.stroke();
     }
 }
