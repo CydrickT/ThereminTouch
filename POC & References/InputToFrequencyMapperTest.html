@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input to frequency mapper</title>
+    <script type="text/javascript" src="..\ThereminTouch\js\steps\MusicConstants.js"></script>
+    <script type="text/javascript" src="..\ThereminTouch\js\steps\Step.js"></script>
+    <script type="text/javascript" src="..\ThereminTouch\js\steps\FrequencyRange.js"></script>
+    <script type="text/javascript" src="..\ThereminTouch\js\steps\FrequencyToStepMapper.js"></script>
+    <script type="text/javascript" src="..\ThereminTouch\js\touchmapping\MappedStep.js"></script>
+    <script type="text/javascript" src="..\ThereminTouch\js\touchmapping\InputToStepMapper.js"></script>
+    <script language="javascript">
+
+        var inputToStepMapper;
+
+        function load(){
+
+            var freqStart = parseFloat(document.getElementById("idFreqStart").value);
+            var freqEnd = parseFloat(document.getElementById("idFreqEnd").value);
+
+            var content = document.getElementById("content");
+            content.innerHTML = '';
+            document.getElementById("pctInfo").innerHTML = '';
+
+            inputToStepMapper = new InputToStepMapper();
+            var stepsArray = inputToStepMapper.selectFrequencyRange(new FrequencyRange(freqStart, freqEnd));
+
+            var frequencyList = document.createElement("div");
+            var title = document.createTextNode("List of frequencies");
+            frequencyList.appendChild(title);
+            frequencyList.appendChild(document.createElement("br"));
+            frequencyList.appendChild(document.createElement("br"));
+            for (var i = 0; i < stepsArray.length; i++){
+                var currentMappedStep = stepsArray[i];
+                var node = document.createTextNode(currentMappedStep.toString());
+                frequencyList.appendChild(node);
+                frequencyList.appendChild(document.createElement("br"));
+            }
+
+            content.appendChild(frequencyList);
+        }
+
+        function loadPct(){
+            var pct = parseFloat(document.getElementById("idPct").value);
+            var frequency = inputToStepMapper.calculateFrequencyFromTouch(pct);
+            var insideInitialRange = inputToStepMapper._isInsideInitialRange();
+            var pctInfo = document.getElementById("pctInfo");
+            pctInfo.innerHTML = '';
+            var title = document.createTextNode("Frequency: "+ frequency + ", Inside initial range?: " + insideInitialRange);
+            pctInfo.appendChild(title);
+        }
+
+        function resetTouch(){
+            inputToStepMapper.resetTouch();
+            document.getElementById("pctInfo").innerHTML = '';
+        }
+
+    </script>
+</head>
+<body>
+Frequency range: <input type="text" id="idFreqStart" />hz to <input type="text" id="idFreqEnd" />hz<br />
+<button onclick="load()">Select range</button><br />
+<div id="content" ></div>
+<br /><br />
+Percentage: <input type="text" id="idPct" />%<br />
+<button onclick="loadPct()">Select percentage</button><button onclick="resetTouch()">Reset Touch</button><br />
+<div id="pctInfo" ></div>
+</body>
+</html>

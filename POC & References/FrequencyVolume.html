@@ -1,0 +1,82 @@
+<!-- POC for the theremin - Cydrick Trudel-->
+<html>
+	<head>
+		<script type="text/javascript" src="../ThereminTouch/js/audio/AudioController.js"></script>
+			<script language="JavaScript">
+		
+				var audioControl;
+				
+				function load(){
+					audioControl = new AudioController();
+					
+					// Adding waveform types to the waveform list
+					var waveformTypes = audioControl.getWaveformTypesAsString();
+					var waveformDdl = document.getElementById("idWaveform");
+					for (var i = 0; i < waveformTypes.length; i++){
+						var option = document.createElement("option");
+						option.text = waveformTypes[i];
+						
+						waveformDdl.add(option);
+					}
+				}
+				
+				
+				function fPlay(){
+				
+					var frequency = document.getElementById("idFrequency").value;
+					var volume = document.getElementById("idVolume").value;
+					var waveform = document.getElementById("idWaveform").selectedIndex;
+					var detune = document.getElementById("idDetune").value;
+					var delay = document.getElementById("idDelay").value;
+					var bitcrusher = document.getElementById("idBitcrusher").checked;
+					
+					audioControl.setFrequency(frequency);
+					audioControl.setVolume(volume);
+					audioControl.setWaveformType(waveform);
+					audioControl.setDetune(detune);
+					audioControl.setEchoDelay(delay);
+					audioControl.setEnableBitcrusher(bitcrusher);
+					
+					audioControl.play();
+
+				}	
+				
+				function fStop(){
+					audioControl.pause()
+				}
+
+
+		
+		</script>
+	</head>
+	<body onload="load()">
+		<b>Theremin Test</b>
+		<br />
+		This is a proof of concept to try out the controls of the Javascript Audio API The interesting bits are in AudioController.js. By the way, sorry Internet Explorer users, whis won't work for you.
+		<br />
+		<br />
+		Also, make sure your computer's sound is low before starting, and then adjust.
+		<br />
+		<br />
+		<b>General controls</b>
+		<br />
+		Frequency: <input type="text" value='220' id="idFrequency" /> hz (Humans hear frequencies between 20hz and 20000hz)
+		<br />
+		Volume: <input type="text" value = '0.2' id="idVolume" /> (There's no real unit for that)
+		<br />
+		Detune: <input type="text" value='0' id="idDetune" /> (Positive or negative numerical value)
+		<br />
+		Waveform: <select id="idWaveform" > </select> (Watch out, some of them sounds real bad)
+		<br /><br />
+		<b>Echo controls</b>
+		<br />
+		Delay: <input type="text" value='0.5' id="idDelay" /> seconds (note that it is interesting to modify this value while playing a sound. You can hear the original wave and the delayed wave getting closer / distant. Set to 0 for no echo )
+		<br /><br />
+		<b>Effects</b>
+		<br />
+		Bitcrusher: <input type="checkbox" id="idBitcrusher">
+		<br /><br />
+
+		<button onclick="fPlay()">Play that sound</button><button onclick="fStop()">Stop that sound</button>
+	</body>
+</html>
