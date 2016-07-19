@@ -65,5 +65,6 @@ function OptionSingleSelect(x1, y1, x2, y2, options, color, text) {
     var shape = function (x , y, width, height) {
         _context.beginPath();
         _context.rect(x, y, width, height);
+        _context.stroke();
     }
 }

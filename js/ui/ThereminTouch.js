@@ -17,7 +17,7 @@
     this.init = function() {
         _inputToStepMapper = new InputToStepMapper();
         _audioController = new AudioController();
-        _frequencyRange = new FrequencyRange(100, 500)
+        _frequencyRange = new FrequencyRange(300, 1000);
         _mappedStepList = _inputToStepMapper.selectFrequencyRange(_frequencyRange);
         this.setAudioController();
         this.createCanvas();
@@ -59,7 +59,7 @@
         _canvas.separator = Math.floor(window.innerWidth*0.3);
         _canvas.separatorWidth = 30;
         _canvas.zone = [
-            {x1:0, y1:0, x2:_canvas.separator, y2:_canvas.height*0.95}, //Volume zone
+            {x1:0, y1:0, x2:_canvas.separator, y2:_canvas.height*0.9}, //Volume zone
             {x1:_canvas.separator+_canvas.separatorWidth, y1:0, x2:_canvas.width*0.98, y2:_canvas.height*0.884}, //Frequency zone
         ];
         _canvas.zone.push({x1:_canvas.zone[0].x1, y1:_canvas.zone[0].y2, x2:_canvas.zone[0].x2, y2:_canvas.height}); //Volume=0 zone
@@ -83,7 +83,7 @@
         var detuneButton = new Button(0.53, 0.938, 'panel', 'Detune');
         var echoButton = new Button(0.61, 0.938, 'panel', 'Echo');
         var bitcrusherButton = new Button(0.69, 0.938, 'switch', 'Bitcrusher');
-        var continuousButton = new Button(0.77, 0.938, 'switch', 'Continuous');
+        //var continuousButton = new Button(0.77, 0.938, 'switch', 'Continuous');
         var powerButton = new Button(0.97, 0.938, 'switch', 'Power');
 
         _buttons.push(powerButton);
@@ -92,7 +92,7 @@
         _buttons.push(detuneButton);
         _buttons.push(echoButton);
         _buttons.push(bitcrusherButton);
-        _buttons.push(continuousButton);
+        //_buttons.push(continuousButton);
     }
 
     this.drawButtons = function() {
@@ -184,7 +184,7 @@
         var zonem1y = getZoneY(e.touches ,-1);
         var currentX = 0; //Frequency
         var currentY = 0; //Volume
-        redrawScene();
+        redrawScene(); //Temporary
         if(zone1x.length === 0) {
             //_audioController.setFrequency(_frequencyRange.getMinimum());
         } else {
@@ -297,6 +297,7 @@
 
     this.switchPower = function() {
         _powerIsOn = !_powerIsOn;
+        _audioController.setFrequency(this.getFrequencyMin());
     }
 
     this.powerIsOn = function () {
