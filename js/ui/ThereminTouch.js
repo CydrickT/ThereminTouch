@@ -13,6 +13,8 @@
     var _audioController;
     var _frequencyRange;
     var _mappedStepList;
+    var _detune = 0;
+    var _echo = 0;
     
     this.init = function() {
         _inputToStepMapper = new InputToStepMapper();
@@ -30,8 +32,8 @@
         _audioController.setFrequency(_frequencyRange.getMinimum());
         _audioController.setVolume(1);
         _audioController.setWaveformType(0);
-        _audioController.setDetune(0);
-        _audioController.setEchoDelay(0);
+        _audioController.setDetune(_detune);
+        _audioController.setEchoDelay(_echo);
         _audioController.setEnableBitcrusher(false);
     }
     
@@ -108,7 +110,6 @@
     this.drawStepLines = function() {
         _stepLines = [];
         var i=0;
-       console.log( _mappedStepList.length + " " + _stepLines.length);
         _mappedStepList.forEach(function(mappedStep) {
             _stepLines.push(new StepLine(mappedStep.getPercentage(), mappedStep.getStep().getNoteAsString(), mappedStep.getStep().isHalfTone(), i));
             i++;
@@ -152,8 +153,7 @@
             play(e);
         } else {
             _audioController.pause();
-            handleRsPitchStart(e);
-            handleOssWaveformStart(e);
+            handleOptionStart(e);
         }
     }
 
@@ -163,7 +163,7 @@
             play(e);
         } else {
             _audioController.pause();
-            handleRsPitchMove(e);
+            handleOptionMove(e);
         }
     }
 
@@ -173,7 +173,7 @@
             play(e);
         } else {
             _audioController.pause();
-            handleRsPitchEnd();
+            handleOptionEnd();
         }
         if (e.touches.length === 0) {
             _inputToStepMapper.resetTouch();
@@ -247,34 +247,53 @@
         }
     }
 
-    var handleRsPitchStart = function(e) {
+    var handleOptionStart = function(e) {
         if (_currentPanel !== 0) {
-            if (_currentPanel.getType() === 'Pitch') {
-                _currentPanel.getRsPitch().handleStart(e);
+            switch(_currentPanel.getType()) {
+                case 'Pitch':
+                    _currentPanel.getRsPitch().handleStart(e);
+                    break;
+                case 'Waveform':
+                    _currentPanel.getOssWaveform().handleStart(e);
+                    break;
+                case 'Detune':
+                    _currentPanel.getSDetune().handleStart(e);
+                    break;
+                case 'Echo':
+                    _currentPanel.getSEcho().handleStart(e);
+                    break;
             }
         }
     }
 
-    var handleRsPitchMove = function(e) {
+    var handleOptionMove = function(e) {
         if (_currentPanel !== 0) {
-            if (_currentPanel.getType() === 'Pitch') {
-                _currentPanel.getRsPitch().handleMove(e);
+            switch(_currentPanel.getType()) {
+                case 'Pitch':
+                    _currentPanel.getRsPitch().handleMove(e);
+                    break;
+                case 'Detune':
+                    _currentPanel.getSDetune().handleMove(e);
+                    break;
+                case 'Echo':
+                    _currentPanel.getSEcho().handleMove(e);
+                    break;
             }
         }
     }
 
-    var handleRsPitchEnd = function(e) {
+    var handleOptionEnd = function(e) {
         if (_currentPanel !== 0) {
-            if (_currentPanel.getType() === 'Pitch') {
-                _currentPanel.getRsPitch().handleEnd(e);
-            }
-        }
-    }
-
-    var handleOssWaveformStart = function(e) {
-        if (_currentPanel !== 0) {
-            if (_currentPanel.getType() === 'Waveform') {
-                _currentPanel.getOssWaveform().handleStart(e);
+            switch(_currentPanel.getType()) {
+                case 'Pitch':
+                    _currentPanel.getRsPitch().handleEnd(e);
+                    break;
+                case 'Detune':
+                    _currentPanel.getSDetune().handleEnd(e);
+                    break;
+                case 'Echo':
+                    _currentPanel.getSEcho().handleEnd(e);
+                    break;
             }
         }
     }
@@ -353,6 +372,24 @@
     this.setMappedStepList = function() {
         _frequencyRange = new FrequencyRange(this.getFrequencyMin(), this.getFrequencyMax());
         _mappedStepList = _inputToStepMapper.selectFrequencyRange(_frequencyRange);
+    }
+
+    this.getEcho = function() {
+        return _echo;
+    }
+
+    this.setEcho = function(echo) {
+        _audioController.setEchoDelay(echo);
+        _echo = echo;
+    }
+
+    this.getDetune = function() {
+        return _detune;
+    }
+
+    this.setDetune = function(detune) {
+        _audioController.setDetune(detune);
+        _detune = detune;
     }
 
     window.onload = function() {

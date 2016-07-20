@@ -13,12 +13,16 @@ function OptionPanel(xButton, yButton, type){
 
     var _MINFREQUENCY = 20;
     var _MAXFREQUENCY = 2000;
-
+    var _MINDETUNE = -100;
+    var _MAXDETUNE = 100;
+    var _MAXECHO = 1000;
 
     var options = [];
     options.push('Qwerty1','Qwerty2','Qwerty3','Qwerty4');
     var _rsPitch = new RangeSlider(_x, _x+_width, _y+(0.7*_height),_MINFREQUENCY,_MAXFREQUENCY,getFrequencyMin(),getFrequencyMax());
     var _ossWaveform = new OptionSingleSelect(_x, _y, _x+_width, _y+_height, options, 'black', 'Select a waveform:');
+    var _sDetune = new Slider(_x, _x+_width, _y+(0.7*_height),_MINDETUNE,_MAXDETUNE,getDetune());
+    var _sEcho = new Slider(_x, _x+_width, _y+(0.7*_height),0,_MAXECHO,getEcho());
 
     this.draw = function() {
         this.shape();
@@ -57,8 +61,12 @@ function OptionPanel(xButton, yButton, type){
                 _ossWaveform.draw();
                 break;
             case "Detune":
+                text = 'Select the detune (???):';
+                _sDetune.draw();
                 break;
             case "Echo":
+                text = 'Select the echo (ms):';
+                _sEcho.draw();
                 break;
             case "Bitcrusher":
                 break;
@@ -78,6 +86,14 @@ function OptionPanel(xButton, yButton, type){
 
     this.getOssWaveform = function() {
         return _ossWaveform;
+    }
+
+    this.getSDetune = function() {
+        return _sDetune;
+    }
+
+    this.getSEcho = function() {
+        return _sEcho;
     }
 
     this.drawText = function(text) {
