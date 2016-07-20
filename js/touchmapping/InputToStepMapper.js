@@ -67,6 +67,7 @@ function InputToStepMapper(){
         this.resetTouch();
         _frequencyRange = frequencyRange;
         var stepList = _frequencyToStepMapper.getSteps(_frequencyRange);
+        _mappedStepList = [];
         for(var i = 0; i < stepList.length; i++){
             _mappedStepList.push(new MappedStep(stepList[i], _frequencyRange));
         }

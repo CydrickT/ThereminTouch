@@ -2,9 +2,10 @@ function OptionPanel(xButton, yButton, type){
     var _canvas = getCanvas();
     var _context = getContext();
     var _type = type;
-    var _x = xButton-300*_canvas.width/2736;
+    var _WIDTHMULTIPLIER = 900;
+    var _x = xButton-_WIDTHMULTIPLIER*_canvas.width/2736;
     var _y = yButton-400*_canvas.height/1824;
-    var _width = 600*_canvas.width/2736;
+    var _width = _WIDTHMULTIPLIER*2*_canvas.width/2736;
     var _height = 300*_canvas.height/1824;
     var _fontSize = 28*_canvas.height/1824;
     var _lineWidth = 11*_canvas.width/2736;

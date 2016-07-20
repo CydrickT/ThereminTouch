@@ -17,7 +17,7 @@
     this.init = function() {
         _inputToStepMapper = new InputToStepMapper();
         _audioController = new AudioController();
-        _frequencyRange = new FrequencyRange(300, 1000)
+        _frequencyRange = new FrequencyRange(300, 1000);
         _mappedStepList = _inputToStepMapper.selectFrequencyRange(_frequencyRange);
         this.setAudioController();
         this.createCanvas();
@@ -108,6 +108,7 @@
     this.drawStepLines = function() {
         _stepLines = [];
         var i=0;
+       console.log( _mappedStepList.length + " " + _stepLines.length);
         _mappedStepList.forEach(function(mappedStep) {
             _stepLines.push(new StepLine(mappedStep.getPercentage(), mappedStep.getStep().getNoteAsString(), mappedStep.getStep().isHalfTone(), i));
             i++;
@@ -168,13 +169,14 @@
 
     this.handleEnd = function(e) {
         e.preventDefault();
-        if (e.touches.length === 0) {
-            _inputToStepMapper.resetTouch();
-        }
         if (powerIsOn()) {
             play(e);
         } else {
             _audioController.pause();
+            handleRsPitchEnd();
+        }
+        if (e.touches.length === 0) {
+            _inputToStepMapper.resetTouch();
         }
     }
 
@@ -261,6 +263,14 @@
         }
     }
 
+    var handleRsPitchEnd = function(e) {
+        if (_currentPanel !== 0) {
+            if (_currentPanel.getType() === 'Pitch') {
+                _currentPanel.getRsPitch().handleEnd(e);
+            }
+        }
+    }
+
     var handleOssWaveformStart = function(e) {
         if (_currentPanel !== 0) {
             if (_currentPanel.getType() === 'Waveform') {
@@ -335,6 +345,11 @@
 
     this.setFrequencyMax = function(frequencyMax) {
         _frequencyRange.setMaximum(frequencyMax);
+    }
+
+    this.setMappedStepList = function() {
+        _frequencyRange = new FrequencyRange(this.getFrequencyMin(), this.getFrequencyMax());
+        _mappedStepList = _inputToStepMapper.selectFrequencyRange(_frequencyRange);
     }
 
     window.onload = function() {

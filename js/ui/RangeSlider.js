@@ -11,8 +11,8 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
     var _value2 = value2;
 
     var _lineWidth = 8*_canvas.width/2736;
-    var _fontSize = 22*_canvas.height/1824;
-    var _radius = 15*_canvas.width/2736;
+    var _fontSize = 32*_canvas.height/1824;
+    var _radius = 30*_canvas.width/2736;
     var _colorCircle = 'black';
     var _colorBackLine = 'grey';
     var _colorSegmentLine = 'black';
@@ -29,9 +29,9 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         if (this.checkTouchCircle1(_touchX, _touchY)) {
             _currentCircle = 1;
             _colorCircle = 'red';
-            redrawScene();
         } else if (this.checkTouchCircle2(_touchX, _touchY)) {
             _currentCircle = 2;
+            _colorCircle = 'blue';
         } else {
             _currentCircle = 0;
         }
@@ -49,21 +49,24 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         } else {
             return;
         }
+        setFrequencyMin(Math.min(_value1, _value2));
+        setFrequencyMax(Math.max(_value1, _value2));
+        setMappedStepList();
+        redrawScene();
     }
 
     this.handleEnd = function(e) {
-        e.preventDefault();
         _currentCircle = 0;
     }
 
     this.update = function(value) {
         if (_touchX < _startX) {
             return _minValue;
-        } else if (_touchX > _startX) {
+        } else if (_touchX > _endX) {
             return _maxValue;
+        } else {
+            return Math.floor((_maxValue - _minValue) * ((_touchX - _startX) / (_endX - _startX)));
         }
-
-        return (_maxValue - _minValue) * ((_touchX - _startX) / (_endX - _startX));
     }
 
     this.draw = function() {
@@ -109,8 +112,8 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         _context.font = 'bold '+_fontSize+'pt Calibri';
         _context.textAlign = 'center';
         _context.fillStyle = 'black';
-        _context.fillText(_value1, _circleX1, _y*0.98);
-        _context.fillText(_value2, _circleX2, _y*0.98);
+        _context.fillText(_value1, _circleX1, _y*0.965);
+        _context.fillText(_value2, _circleX2, _y*0.94);
     }
 
     this.circle1 = function() {
