@@ -206,7 +206,7 @@
             _audioController.setVolume(0);
             _context.fillText('0', 200, 300);
         } else if (zone0y.length === 0) {
-            _audioController.setVolume(1);
+            //_audioController.setVolume(1);
         } else {
             zone0y.forEach(function (yZone2) {
                 if (yZone2 > currentY) {
@@ -307,7 +307,10 @@
 
     this.switchPower = function() {
         _powerIsOn = !_powerIsOn;
-        _audioController.setFrequency(this.getFrequencyMin());
+        if (_powerIsOn) {
+            _audioController.setFrequency(this.getFrequencyMin());
+            _audioController.setVolume(1);
+        }
     }
 
     this.powerIsOn = function () {
