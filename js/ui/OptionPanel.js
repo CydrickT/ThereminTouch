@@ -11,7 +11,7 @@ function OptionPanel(xButton, yButton, type){
     var _lineWidth = 11*_canvas.width/2736;
     var _isOpen = false;
 
-    var _MINFREQUENCY = 0;
+    var _MINFREQUENCY = 20;
     var _MAXFREQUENCY = 2000;
 
 

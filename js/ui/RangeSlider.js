@@ -41,7 +41,7 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         _touchX = e.touches[0].clientX;
         _touchY = e.touches[0].clientY;
         if (_currentCircle === 1) {
-            _value1 = this.update(_value1);
+            _value1 = this.update();
             this.setCircleX1();
         } else if (_currentCircle === 2) {
             _value2 = this.update(_value2);
@@ -59,13 +59,13 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         _currentCircle = 0;
     }
 
-    this.update = function(value) {
+    this.update = function() {
         if (_touchX < _startX) {
             return _minValue;
         } else if (_touchX > _endX) {
             return _maxValue;
         } else {
-            return Math.floor((_maxValue - _minValue) * ((_touchX - _startX) / (_endX - _startX)));
+            return Math.floor((_maxValue-_minValue) * (((_touchX - _startX) / (_endX - _startX)))+_minValue);
         }
     }
 
