@@ -58,7 +58,7 @@
         _context = _canvas.getContext('2d');
         _canvas.height = window.innerHeight-4;
         _canvas.width = window.innerWidth-4;
-        _canvas.separator = Math.floor(window.innerWidth*0.3);
+        _canvas.separator = window.innerWidth*0.297;
         _canvas.separatorWidth = 30;
         _canvas.zone = [
             {x1:0, y1:0, x2:_canvas.separator, y2:_canvas.height*0.9}, //Volume zone
@@ -120,8 +120,10 @@
     }
     
     this.drawSeparator = function() {
+        _context.globalAlpha=0.2;
         _context.fillStyle = 'black';
         _context.fillRect(_canvas.separator,0,_canvas.separatorWidth,_canvas.height);
+        _context.globalAlpha=1;
     }
 
     this.drawCurrentPanel = function() {
