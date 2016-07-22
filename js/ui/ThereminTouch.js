@@ -80,6 +80,7 @@
     }
 
     this.createButtons = function() {
+        _buttons = [];
         var pitchButton = new Button(0.37, 0.938, 'panel', 'Pitch');
         var waveformButton = new Button(0.45, 0.938, 'panel', 'Waveform');
         var detuneButton = new Button(0.53, 0.938, 'panel', 'Detune');
@@ -396,5 +397,11 @@
 
     window.onload = function() {
         this.init();
+    };
+
+    window.onresize = function(event) {
+        this.createCanvas();
+        this.createButtons();
+        this.redrawScene();
     };
 }());
