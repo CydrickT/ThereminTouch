@@ -26,7 +26,7 @@
         this.createButtons();
         this.addTouchEvents();
         redrawScene();
-    }
+    };
 
     this.setAudioController = function() {
         _audioController.setFrequency(_frequencyRange.getMinimum());
@@ -35,23 +35,23 @@
         _audioController.setDetune(_detune);
         _audioController.setEchoDelay(_echo);
         _audioController.setEnableBitcrusher(false);
-    }
+    };
     
     this.getCanvas = function () {
         return _canvas;
-    }
+    };
 
     this.getContext = function () {
         return _context;
-    }
+    };
 
     this.getCurrentPanel = function () {
         return _currentPanel;
-    }
+    };
 
     this.setCurrentPanel = function (panel) {
         _currentPanel = panel;
-    }
+    };
 
     this.createCanvas = function() {
         _canvas = document.getElementById('myCanvas');
@@ -65,7 +65,7 @@
             {x1:_canvas.separator+_canvas.separatorWidth, y1:0, x2:_canvas.width*0.98, y2:_canvas.height*0.884}, //Frequency zone
         ];
         _canvas.zone.push({x1:_canvas.zone[0].x1, y1:_canvas.zone[0].y2, x2:_canvas.zone[0].x2, y2:_canvas.height}); //Volume=0 zone
-    }
+    };
 
     this.isInZone = function(x,y) {
         if((x>=_canvas.zone[2].x1 && x<=_canvas.zone[2].x2) && (y>=_canvas.zone[2].y1 && y<=_canvas.zone[2].y2)) {
@@ -77,7 +77,7 @@
         } else {
             return 2; //Non playing zone
         }
-    }
+    };
 
     this.createButtons = function() {
         _buttons = [];
@@ -96,7 +96,7 @@
         _buttons.push(echoButton);
         _buttons.push(bitcrusherButton);
         //_buttons.push(continuousButton);
-    }
+    };
 
     this.drawButtons = function() {
         if(_powerIsOn) {
@@ -106,7 +106,7 @@
                 button.draw();
             });
         }
-    }
+    };
     
     this.drawStepLines = function() {
         _stepLines = [];
@@ -118,14 +118,14 @@
         _stepLines.forEach(function(stepLine) {
             stepLine.draw();
         });
-    }
+    };
     
     this.drawSeparator = function() {
         _context.globalAlpha=0.2;
         _context.fillStyle = 'black';
         _context.fillRect(_canvas.separator,0,_canvas.separatorWidth,_canvas.height);
         _context.globalAlpha=1;
-    }
+    };
 
     this.drawCurrentPanel = function() {
         if (_currentPanel !== 0) {
@@ -133,7 +133,7 @@
                 _currentPanel.draw();
            //}
         }
-    }
+    };
 
     this.redrawScene = function() {
         _context.clearRect(0, 0, _canvas.width, _canvas.height);
@@ -141,13 +141,13 @@
         this.drawButtons();
         this.drawStepLines();
         this.drawCurrentPanel();
-    }
+    };
 
     this.addTouchEvents = function() {
         _canvas.addEventListener("touchstart", handleStart, false);
         _canvas.addEventListener("touchend", handleEnd, false);
         _canvas.addEventListener("touchmove", handleMove, false);
-    }
+    };
 
     this.handleStart = function(e) {
         e.preventDefault();
@@ -168,7 +168,7 @@
             _audioController.pause();
             handleOptionMove(e);
         }
-    }
+    };
 
     this.handleEnd = function(e) {
         e.preventDefault();
@@ -181,7 +181,7 @@
         if (e.touches.length === 0) {
             _inputToStepMapper.resetTouch();
         }
-    }
+    };
 
     var play = function(e) {
         var zone1x = getZoneX(e.touches ,1);
@@ -221,7 +221,7 @@
             _audioController.setVolume(volume);
         }
         _audioController.play();
-    }
+    };
 
     var handleButtons = function(e) {
         for (var i=0; i<e.touches.length; i++) {
@@ -248,7 +248,7 @@
                 }
             }
         }
-    }
+    };
 
     var handleOptionStart = function(e) {
         if (_currentPanel !== 0) {
@@ -267,7 +267,7 @@
                     break;
             }
         }
-    }
+    };
 
     var handleOptionMove = function(e) {
         if (_currentPanel !== 0) {
@@ -283,7 +283,7 @@
                     break;
             }
         }
-    }
+    };
 
     var handleOptionEnd = function(e) {
         if (_currentPanel !== 0) {
@@ -299,7 +299,7 @@
                     break;
             }
         }
-    }
+    };
 
     var getZoneX = function(touches, zone) {
         var zone1x = [];
@@ -312,7 +312,7 @@
             }
         }
         return zone1x;
-    }
+    };
 
     var getZoneY = function(touches, zone) {
         var zone1y = [];
@@ -325,7 +325,7 @@
             }
         }
         return zone1y;
-    }
+    };
 
     this.switchPower = function() {
         _powerIsOn = !_powerIsOn;
@@ -333,67 +333,67 @@
             _audioController.setFrequency(this.getFrequencyMin());
             _audioController.setVolume(1);
         }
-    }
+    };
 
     this.powerIsOn = function () {
         return _powerIsOn;
-    }
+    };
 
     this.switchBitcrusher = function() {
         _bitcrusherIsOn = !_bitcrusherIsOn;
         _audioController.setEnableBitcrusher(_bitcrusherIsOn);
-    }
+    };
 
     this.bitcrusherIsOn = function () {
         return _bitcrusherIsOn;
-    }
+    };
 
     this.switchContinuous = function() {
         _continuousIsOn = !_continuousIsOn;
-    }
+    };
 
     this.continuousIsOn = function () {
         return _continuousIsOn;
-    }
+    };
 
     this.getFrequencyMin = function() {
         return _frequencyRange.getMinimum();
-    }
+    };
 
     this.setFrequencyMin = function(frequencyMin) {
         _frequencyRange.setMinimum(frequencyMin);
-    }
+    };
 
     this.getFrequencyMax = function() {
         return _frequencyRange.getMaximum();
-    }
+    };
 
     this.setFrequencyMax = function(frequencyMax) {
         _frequencyRange.setMaximum(frequencyMax);
-    }
+    };
 
     this.setMappedStepList = function() {
         _frequencyRange = new FrequencyRange(this.getFrequencyMin(), this.getFrequencyMax());
         _mappedStepList = _inputToStepMapper.selectFrequencyRange(_frequencyRange);
-    }
+    };
 
     this.getEcho = function() {
         return _echo;
-    }
+    };
 
     this.setEcho = function(echo) {
         _audioController.setEchoDelay(echo);
         _echo = echo;
-    }
+    };
 
     this.getDetune = function() {
         return _detune;
-    }
+    };
 
     this.setDetune = function(detune) {
         _audioController.setDetune(detune);
         _detune = detune;
-    }
+    };
 
     window.onload = function() {
         this.init();
