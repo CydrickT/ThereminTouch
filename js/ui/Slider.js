@@ -42,9 +42,9 @@ function Slider(startX, endX, y, minValue, maxValue, value) {
     }
 
     this.handleEnd = function(e) {
-        if (getCurrentPanel() === 'Detune') {
+        if (getCurrentPanel().getType() === 'Detune') {
             setDetune(_value);
-        } else if (getCurrentPanel() === 'Echo') {
+        } else if (getCurrentPanel().getType() === 'Echo') {
             setEcho(_value);
         }
         _circleIsSelected = false;
@@ -103,6 +103,10 @@ function Slider(startX, endX, y, minValue, maxValue, value) {
     }
 
     this.setCircleX = function() {
+        //FIXME: Trouver meilleure formule
         _circleX = _startX+(_endX-_startX)*(_value/(_maxValue-_minValue));
+        if (Math.abs(_minValue) === _maxValue) {
+            _circleX = _circleX+(_endX-_startX)/2;
+        }
     }
 }
