@@ -27,7 +27,7 @@ function Slider(startX, endX, y, minValue, maxValue, value) {
             _circleIsSelected = true;
             _colorCircle = 'red';
         }
-    }
+    };
 
     this.handleMove = function(e) {
         _touchX = e.touches[0].clientX;
@@ -39,7 +39,7 @@ function Slider(startX, endX, y, minValue, maxValue, value) {
             return;
         }
         redrawScene();
-    }
+    };
 
     this.handleEnd = function(e) {
         if (getCurrentPanel().getType() === 'Detune') {
@@ -48,7 +48,7 @@ function Slider(startX, endX, y, minValue, maxValue, value) {
             setEcho(_value);
         }
         _circleIsSelected = false;
-    }
+    };
 
     this.update = function() {
         if (_touchX < _startX) {
@@ -58,13 +58,13 @@ function Slider(startX, endX, y, minValue, maxValue, value) {
         } else {
             return Math.floor((_maxValue-_minValue) * (((_touchX - _startX) / (_endX - _startX)))+_minValue);
         }
-    }
+    };
 
     this.draw = function() {
         this.setCircleX();
         this.drawBackLine();
         this.drawCircle();
-    }
+    };
 
     this.drawBackLine = function() {
         _context.beginPath();
@@ -79,7 +79,7 @@ function Slider(startX, endX, y, minValue, maxValue, value) {
         _context.fillStyle = 'black';
         _context.fillText(_minValue, _startX, _y*1.03);
         _context.fillText(_maxValue, _endX, _y*1.03);
-    }
+    };
 
     this.drawCircle = function() {
         this.circle();
@@ -90,17 +90,17 @@ function Slider(startX, endX, y, minValue, maxValue, value) {
         _context.textAlign = 'center';
         _context.fillStyle = 'black';
         _context.fillText(_value, _circleX, _y*0.965);
-    }
+    };
 
     this.circle = function() {
         _context.beginPath();
         _context.arc(_circleX, _y, _radius, 0, 2*Math.PI, false);
-    }
+    };
 
     this.checkTouchCircle = function(x, y) {
         this.circle();
         return _context.isPointInPath(x, y);
-    }
+    };
 
     this.setCircleX = function() {
         //FIXME: Trouver meilleure formule
@@ -108,5 +108,5 @@ function Slider(startX, endX, y, minValue, maxValue, value) {
         if (Math.abs(_minValue) === _maxValue) {
             _circleX = _circleX+(_endX-_startX)/2;
         }
-    }
+    };
 }

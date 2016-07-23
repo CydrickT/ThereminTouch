@@ -19,7 +19,7 @@ function OptionPanel(xButton, yButton, type){
 
     var _waveforms = getAudioController().getWaveformTypesAsString();
     var _rsPitch = new RangeSlider(_x, _x+_width, _y+(0.7*_height),_MINFREQUENCY,_MAXFREQUENCY,getFrequencyMin(),getFrequencyMax());
-    var _ossWaveform = new OptionSingleSelect(_x, _y, _x+_width, _y+_height, _waveforms, 'black');
+    var _ossWaveform = new OptionSingleSelect(_x, _y, _x+_width, _waveforms, 'black');
     var _sDetune = new Slider(_x, _x+_width, _y+(0.7*_height),_MINDETUNE,_MAXDETUNE,getDetune());
     var _sEcho = new Slider(_x, _x+_width, _y+(0.7*_height),0,_MAXECHO,getEcho());
 

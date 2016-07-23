@@ -6,17 +6,17 @@ function Rect(x, y, width, height) {
 
     this.getX = function() {
         return _rectX;
-    }
+    };
 
     this.getY = function() {
         return _rectY;
-    }
+    };
 
     this.getHeight = function() {
         return _rectH;
-    }
+    };
 
     this.getWidth = function() {
         return _rectW;
-    }
+    };
 }

@@ -35,7 +35,7 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         } else {
             _currentCircle = 0;
         }
-    }
+    };
 
     this.handleMove = function(e) {
         _touchX = e.touches[0].clientX;
@@ -53,11 +53,11 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         setFrequencyMax(Math.max(_value1, _value2));
         setMappedStepList();
         redrawScene();
-    }
+    };
 
     this.handleEnd = function(e) {
         _currentCircle = 0;
-    }
+    };
 
     this.update = function() {
         if (_touchX < _startX) {
@@ -67,7 +67,7 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         } else {
             return Math.floor((_maxValue-_minValue) * (((_touchX - _startX) / (_endX - _startX)))+_minValue);
         }
-    }
+    };
 
     this.draw = function() {
         this.setCircleX1();
@@ -75,7 +75,7 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         this.drawBackLine();
         this.drawSegmentLine();
         this.drawCircles();
-    }
+    };
 
     this.drawBackLine = function() {
         _context.beginPath();
@@ -90,7 +90,7 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         _context.fillStyle = 'black';
         _context.fillText(_minValue, _startX, _y*1.03);
         _context.fillText(_maxValue, _endX, _y*1.03);
-    }
+    };
 
     this.drawSegmentLine = function() {
         _context.beginPath();
@@ -99,7 +99,7 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         _context.lineWidth = _lineWidth;
         _context.strokeStyle = _colorSegmentLine;
         _context.stroke();
-    }
+    };
 
     this.drawCircles = function() {
         this.circle1();
@@ -114,33 +114,33 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         _context.fillStyle = 'black';
         _context.fillText(_value1, _circleX1, _y*0.965);
         _context.fillText(_value2, _circleX2, _y*0.94);
-    }
+    };
 
     this.circle1 = function() {
         _context.beginPath();
         _context.arc(_circleX1, _y, _radius, 0, 2*Math.PI, false);
-    }
+    };
 
     this.circle2 = function() {
         _context.beginPath();
         _context.arc(_circleX2, _y, _radius, 0, 2*Math.PI, false);
-    }
+    };
 
     this.checkTouchCircle1 = function(x, y) {
         this.circle1();
         return _context.isPointInPath(x, y);
-    }
+    };
 
     this.checkTouchCircle2 = function(x, y) {
         this.circle2();
         return _context.isPointInPath(x, y);
-    }
+    };
 
     this.setCircleX1 = function() {
         _circleX1 = _startX+(_endX-_startX)*(_value1/(_maxValue-_minValue));
-    }
+    };
 
     this.setCircleX2 = function() {
         _circleX2 = _startX+(_endX-_startX)*(_value2/(_maxValue-_minValue));
-    }
+    };
 }

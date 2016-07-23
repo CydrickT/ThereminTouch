@@ -1,10 +1,9 @@
-function OptionSingleSelect(x1, y1, x2, y2, options, color) {
+function OptionSingleSelect(x1, y1, x2, options, color) {
     var _canvas = getCanvas();
     var _context = getContext();
     var _x1 = x1;
     var _y1 = y1;
     var _x2 = x2;
-    var _y2 = y2;
     var _options = options;
     var _color = color;
     var _fontSize = 44 * _canvas.height / 1824;
@@ -35,7 +34,7 @@ function OptionSingleSelect(x1, y1, x2, y2, options, color) {
             _context.fillText(option, _xText, _yText);
             i++;
         });
-    }
+    };
     
     this.handleStart = function(e) {
         _touchX = e.touches[0].clientX;
@@ -46,7 +45,7 @@ function OptionSingleSelect(x1, y1, x2, y2, options, color) {
             setWaveform(i);
             redrawScene();
         }
-    }
+    };
 
     this.checkTouch = function (x,y) {
         for(var i = 0; i < _rects.length; i++){
@@ -56,7 +55,7 @@ function OptionSingleSelect(x1, y1, x2, y2, options, color) {
             }
         }
         return -1;
-    }
+    };
 
     var shape = function (x , y, width, height) {
         _context.beginPath();

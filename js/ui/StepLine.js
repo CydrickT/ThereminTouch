@@ -29,5 +29,5 @@ function StepLine(xPerc, text, isHalfTone, i){
         _context.textAlign = 'center';
         _context.fillStyle = '#15009E';
         _context.fillText(_text, _x, _yText);
-    }
+    };
 }

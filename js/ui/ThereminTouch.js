@@ -68,7 +68,7 @@
         _canvas.separatorWidth = 30;
         _canvas.zone = [
             {x1:0, y1:0, x2:_canvas.separator, y2:_canvas.height*0.9}, //Volume zone
-            {x1:_canvas.separator+_canvas.separatorWidth, y1:0, x2:_canvas.width*0.98, y2:_canvas.height*0.884}, //Frequency zone
+            {x1:_canvas.separator+_canvas.separatorWidth, y1:0, x2:_canvas.width*0.98, y2:_canvas.height*0.884} //Frequency zone
         ];
         _canvas.zone.push({x1:_canvas.zone[0].x1, y1:_canvas.zone[0].y2, x2:_canvas.zone[0].x2, y2:_canvas.height}); //Volume=0 zone
     };
@@ -164,7 +164,7 @@
             _audioController.pause();
             handleOptionStart(e);
         }
-    }
+    };
 
     this.handleMove = function(e) {
         e.preventDefault();
@@ -414,7 +414,7 @@
         this.init();
     };
 
-    window.onresize = function(event) {
+    window.onresize = function() {
         this.createCanvas();
         this.createButtons();
         this.redrawScene();

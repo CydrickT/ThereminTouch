@@ -28,17 +28,17 @@ function Button(xPerc, yPerc, type, text){
         _context.textAlign = 'center';
         _context.fillStyle = 'black';
         _context.fillText(_text, _x, _y*1.06);
-    }
+    };
 
     this.shape = function() {
         _context.beginPath();
         _context.arc(_x, _y, _radius, 0, 2*Math.PI, false);
-    }
+    };
 
     this.checkTouch = function(x, y) {
         this.shape();
         return _context.isPointInPath(x, y);
-    }
+    };
 
     this.press = function() {
         if (_type === 'panel') {
@@ -58,7 +58,7 @@ function Button(xPerc, yPerc, type, text){
             this.switchColor();
         }
         redrawScene();
-    }
+    };
 
     this.switchColor = function() {
         if(_color === 'red') {
@@ -66,5 +66,5 @@ function Button(xPerc, yPerc, type, text){
         } else {
             _color = 'red';
         }
-    }
+    };
 }
