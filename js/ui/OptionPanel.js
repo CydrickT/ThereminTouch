@@ -61,7 +61,7 @@ function OptionPanel(xButton, yButton, type){
                 _ossWaveform.draw();
                 break;
             case "Detune":
-                text = 'Select the detune (???):';
+                text = 'Select the detune (%):';
                 _sDetune.draw();
                 break;
             case "Echo":
