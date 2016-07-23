@@ -15,6 +15,7 @@
     var _mappedStepList;
     var _detune = 0;
     var _echo = 0;
+    var _waveform = 0;
     
     this.init = function() {
         _inputToStepMapper = new InputToStepMapper();
@@ -34,7 +35,12 @@
         _audioController.setWaveformType(0);
         _audioController.setDetune(_detune);
         _audioController.setEchoDelay(_echo);
+        _audioController.setWaveformType(_waveform);
         _audioController.setEnableBitcrusher(false);
+    };
+
+    this.getAudioController = function() {
+        return _audioController;
     };
     
     this.getCanvas = function () {
@@ -393,6 +399,15 @@
     this.setDetune = function(detune) {
         _audioController.setDetune(detune);
         _detune = detune;
+    };
+
+    this.getWaveform = function() {
+        return _waveform;
+    };
+
+    this.setWaveform = function(waveform) {
+        _audioController.setWaveformType(waveform);
+        _waveform = waveform;
     };
 
     window.onload = function() {

@@ -17,10 +17,9 @@ function OptionPanel(xButton, yButton, type){
     var _MAXDETUNE = 100;
     var _MAXECHO = 1000;
 
-    var options = [];
-    options.push('Qwerty1','Qwerty2','Qwerty3','Qwerty4');
+    var _waveforms = getAudioController().getWaveformTypesAsString();
     var _rsPitch = new RangeSlider(_x, _x+_width, _y+(0.7*_height),_MINFREQUENCY,_MAXFREQUENCY,getFrequencyMin(),getFrequencyMax());
-    var _ossWaveform = new OptionSingleSelect(_x, _y, _x+_width, _y+_height, options, 'black', 'Select a waveform:');
+    var _ossWaveform = new OptionSingleSelect(_x, _y, _x+_width, _y+_height, _waveforms, 'black');
     var _sDetune = new Slider(_x, _x+_width, _y+(0.7*_height),_MINDETUNE,_MAXDETUNE,getDetune());
     var _sEcho = new Slider(_x, _x+_width, _y+(0.7*_height),0,_MAXECHO,getEcho());
 
@@ -58,6 +57,7 @@ function OptionPanel(xButton, yButton, type){
                 _rsPitch.draw();
                 break;
             case "Waveform":
+                text = 'Select a waveform:';
                 _ossWaveform.draw();
                 break;
             case "Detune":
