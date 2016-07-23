@@ -25,7 +25,6 @@ function Slider(startX, endX, y, minValue, maxValue, value) {
         _touchY = e.touches[0].clientY;
         if (this.checkTouchCircle(_touchX, _touchY)) {
             _circleIsSelected = true;
-            _colorCircle = 'red';
         }
     };
 

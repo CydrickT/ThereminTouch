@@ -28,10 +28,8 @@ function RangeSlider(startX, endX, y, minValue, maxValue, value1, value2) {
         _touchY = e.touches[0].clientY;
         if (this.checkTouchCircle1(_touchX, _touchY)) {
             _currentCircle = 1;
-            _colorCircle = 'red';
         } else if (this.checkTouchCircle2(_touchX, _touchY)) {
             _currentCircle = 2;
-            _colorCircle = 'blue';
         } else {
             _currentCircle = 0;
         }

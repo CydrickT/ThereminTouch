@@ -206,7 +206,6 @@
             });
             var touchPercentage = (currentX - _canvas.zone[1].x1) / (_canvas.zone[1].x2 - _canvas.zone[1].x1);
             var frequency = _inputToStepMapper.calculateFrequencyFromTouch(touchPercentage);
-            _context.fillText(touchPercentage, 200, 100);
             _audioController.setFrequency(frequency);
         }
 
@@ -223,7 +222,6 @@
                 }
             });
             var volume = 1-((currentY - _canvas.zone[0].y1) / (_canvas.zone[0].y2 - _canvas.zone[0].y1));
-            _context.fillText(volume, 200, 300);
             _audioController.setVolume(volume);
         }
         _audioController.play();
