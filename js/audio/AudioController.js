@@ -233,7 +233,7 @@ function AudioController(){
 	 * @param delay the delay in milliseconds
      */
 	this.setEchoDelay = function(delay){
-		_delayNode.delayTime.value  = delay;
+		_delayNode.delayTime.value  = (delay / 1000);
 	};
 
 	/**
