@@ -231,8 +231,10 @@
             var touch = e.touches[i];
             var x = touch.clientX;
             var y = touch.clientY;
+            var closedPanel = 0;
             if (_currentPanel !== 0) {
                 if (_currentPanel.checkNotTouch(x,y)) {
+                    closedPanel = _currentPanel.getType();
                     setCurrentPanel(0);
                     redrawScene();
                 }
@@ -244,7 +246,7 @@
                     }
                 } else {
                     _buttons.forEach(function (button) {
-                        if (button.checkTouch(x, y)) {
+                        if (button.checkTouch(x, y) && closedPanel !== button.getText()) {
                             button.press();
                         }
                     });

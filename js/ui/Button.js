@@ -88,4 +88,8 @@ function Button(xPerc, yPerc, type, text){
             _color = 'red';
         }
     };
+
+    this.getText = function() {
+        return _text;
+    };
 }
