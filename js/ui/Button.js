@@ -10,11 +10,32 @@ function Button(xPerc, yPerc, type, text){
     var _lineWidth = 11*_canvas.width/2736;
     var _fontSize = 28*_canvas.height/1824;
     var _isOn = false;
-    
+
+    // FIXME: Essayer de trouver une meilleure logique
     if (_type === 'panel') {
         _color = 'gray';
     } else if (_type === 'switch') {
-        _color = 'red';
+        if (_text === 'Power') {
+            if(powerIsOn()) {
+                _color = 'green';
+            } else {
+                _color = 'red';
+            }
+        }
+        if (_text === 'Continuous') {
+            if(continuousIsOn()) {
+                _color = 'green';
+            } else {
+                _color = 'red';
+            }
+        }
+        if (_text === 'Bitcrusher') {
+            if(bitcrusherIsOn()) {
+                _color = 'green';
+            } else {
+                _color = 'red';
+            }
+        }
     }
 
     this.draw = function() {
