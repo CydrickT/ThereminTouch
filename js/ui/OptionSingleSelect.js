@@ -7,7 +7,7 @@ function OptionSingleSelect(x1, y1, x2, options, color) {
     var _options = options;
     var _color = color;
     var _fontSize = 44 * _canvas.height / 1824;
-    var _selectedOption = 0;
+    var _selectedOption = getWaveform();
 
     var _xText = (_x1+60*_canvas.height/1824);
     var _yText = 0;

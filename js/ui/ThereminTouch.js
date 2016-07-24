@@ -212,7 +212,6 @@
 
         if (zonem1y.length !== 0) {
             _audioController.setVolume(0);
-            _context.fillText('0', 200, 300);
         } else if (zone0y.length === 0) {
             //_audioController.setVolume(1);
         } else {
