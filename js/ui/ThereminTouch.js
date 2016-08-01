@@ -66,13 +66,13 @@
         if (!hasTouchCabability){
             var message = "Your browser does not seem to have touch capabilities.\n\n" +
                 "There are plans to handle mouse inputs in the future, but this currently only works on devices such as " +
-                "a phone, a tablet or a Microsoft Surface (using Chrome).\n\n" ;
+                "a phone, a tablet or a Microsoft Surface.\n\n" ;
 
             if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
                 message += "If this device is a Microsoft Surface or a Surface-like device, you must set the \"dom.w3c_touch_events\" value to \"2\" "+
                     "in the \"about:config\" option."
             }
-            if(navigator.userAgent.toLowerCase().indexOf('edge') > -1){
+            else if(navigator.userAgent.toLowerCase().indexOf('edge') > -1){
                 message += "If this device is a Microsoft Surface or a Surface-like device, you must set the \"Eable touch events \" value to \"Only when a touchscreen is detected\" "+
                     "in the \"about:flags\" option."
             }
