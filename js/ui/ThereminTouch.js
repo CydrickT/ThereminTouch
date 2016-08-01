@@ -18,6 +18,7 @@
     var _waveform = 0;
     
     this.init = function() {
+
         _inputToStepMapper = new InputToStepMapper();
         _audioController = new AudioController();
         _frequencyRange = new FrequencyRange(250, 535); // C4 -> C5
@@ -27,6 +28,7 @@
         this.createButtons();
         this.addTouchEvents();
         redrawScene();
+        this.checkBrowserCompatibility();
     };
 
     this.setAudioController = function() {
@@ -57,6 +59,27 @@
 
     this.setCurrentPanel = function (panel) {
         _currentPanel = panel;
+    };
+
+    this.checkBrowserCompatibility = function(){
+        var hasTouchCabability =  (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
+        if (!hasTouchCabability){
+            var message = "Your browser does not seem to have touch capabilities.\n\n" +
+                "There are plans to handle mouse inputs in the future, but this currently only works on devices such as " +
+                "a phone, a tablet or a Microsoft Surface (using Chrome).\n\n" ;
+
+            if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
+                message += "If this device is a Microsoft Surface or a Surface-like device, you must set the \"dom.w3c_touch_events\" value to \"2\" "+
+                    "in the \"about:config\" option."
+            }
+            if(navigator.userAgent.toLowerCase().indexOf('edge') > -1){
+                message += "If this device is a Microsoft Surface or a Surface-like device, you must set the \"Eable touch events \" value to \"Only when a touchscreen is detected\" "+
+                    "in the \"about:flags\" option."
+            }
+
+            message += "Sorry!"
+            alert(message);
+        }
     };
 
     this.createCanvas = function() {
@@ -409,13 +432,13 @@
         _waveform = waveform;
     };
 
-    window.onload = function() {
-        this.init();
-    };
-
     window.onresize = function() {
         this.createCanvas();
         this.createButtons();
         this.redrawScene();
+    };
+
+    window.onload = function() {
+        this.init();
     };
 }());
