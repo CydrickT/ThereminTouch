@@ -19,6 +19,8 @@ function AudioController(){
 
 	var _REGULAR_WAVEFOROM_TYPES = ["sine", "square", "sawtooth", "triangle"];
 
+	var _initialized = false;
+
 	/**
 	 * These custom waveforms are the work of Akira Youngblood. http://akirayoungblood.com/projects/custom-waves/
 	 * @type {*[]}
@@ -107,8 +109,7 @@ function AudioController(){
 			_mergeNode.connect(_bitcrusherConnectorStart);
 			_bitcrusherConnectorStart.connect(_bitcrusherConnectorEnd);
 			_bitcrusherConnectorEnd.connect(_endNode);
-			
-			_oscillatorNode.start();
+
 			_volumeNode.gain.value = 0;
 			_endNode.connect(_audioCtx.destination);
 
@@ -285,6 +286,12 @@ function AudioController(){
 	 * Plays the frequency
 	 */
 	this.play = function(){
+
+		if (_initialized === false){
+			_initialized = true;
+			_oscillatorNode.start();
+		}
+
 		if(_started === false){
 			_started = true;
 			this.setVolume(_currentEffectiveVolume);
