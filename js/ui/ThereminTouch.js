@@ -164,11 +164,28 @@
         }
     };
 
+    this.drawTutorial = function() {
+        if (!_powerIsOn) {
+            var imgArrowsVolume = new Image();
+            imgArrowsVolume.onload = function () {
+                _context.drawImage(imgArrowsVolume, 175*_canvas.width/2736, 175*_canvas.height/1824, imgArrowsVolume.width*_canvas.width/2736,imgArrowsVolume.height*_canvas.height/1824);
+            }
+            imgArrowsVolume.src = "img/arrowsVolume.png";
+
+            var imgArrowsFrequency = new Image();
+            imgArrowsFrequency.onload = function () {
+                _context.drawImage(imgArrowsFrequency, 1100*_canvas.width/2736, 550*_canvas.height/1824, imgArrowsFrequency.width*_canvas.width/2736,imgArrowsFrequency.height*_canvas.height/1824);
+            }
+            imgArrowsFrequency.src = "img/arrowsFrequency.png";
+        }
+    };
+
     this.redrawScene = function() {
         _context.clearRect(0, 0, _canvas.width, _canvas.height);
         this.drawSeparator();
         this.drawButtons();
         this.drawStepLines();
+        this.drawTutorial();
         this.drawCurrentPanel();
     };
 
